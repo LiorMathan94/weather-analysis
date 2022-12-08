@@ -1,7 +1,6 @@
 package the_weather_channel_scraper
 
 import (
-	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -37,17 +36,17 @@ func scrapeTemperature(doc *goquery.Document) {
 		highTempString := highTempSpan.Text()
 		highTemp, _ := strconv.Atoi(strings.Replace(highTempString, "°", "", -1))
 
-		if entry, ok := AllData[i]; ok {
-			entry.HighTempValue = highTemp
-			AllData[i] = entry
-		}
-
 		lowTempSpan := s.Find("span.DetailsSummary--lowTempValue--2tesQ")
 		lowTempString := lowTempSpan.Text()
 		lowTemp, _ := strconv.Atoi(strings.Replace(lowTempString, "°", "", -1))
 
+		if highTemp == 0 {
+			highTemp = lowTemp
+		}
+
 		if entry, ok := AllData[i]; ok {
 			entry.LowTempValue = lowTemp
+			entry.HighTempValue = highTemp
 			AllData[i] = entry
 		}
 	})
@@ -88,7 +87,7 @@ func scrapeWind(doc *goquery.Document) {
 	})
 }
 
-func Scrape(city string, count int) map[int]scrapers.WeatherData {
+func Scrape(city string) map[int]scrapers.WeatherData {
 	url := "https://weather.com/he-IL/weather/tenday/l/0bad9b388f3ea8468fd93c95fbfaf69c0e454a844692175e165c6b26a3cf8f62"
 
 	response := scrapers.GetHtml(url)
@@ -102,7 +101,7 @@ func Scrape(city string, count int) map[int]scrapers.WeatherData {
 	scrapeTemperature(doc)
 	scrapeHumidity(doc)
 	scrapeWind(doc)
-	fmt.Println(AllData)
+	// fmt.Println(AllData)
 
 	return AllData
 }

@@ -7,8 +7,8 @@ import (
 
 type WeatherData struct {
 	RainningChance int `json:"raining_chance"`
-	HighTempValue  int `json:"high_temperature"`
 	LowTempValue   int `json:"low_temperature"`
+	HighTempValue  int `json:"high_temperature"`
 	Humidity       int `json:"humidity"`
 	Wind           int `json:"wind"`
 }
