@@ -110,7 +110,7 @@ func MostHumidDay(city string) (int, int) {
 	maxHumidityIndex := 0
 
 	iterations := int(math.Min(float64(len(weatherChannelData)), float64(len(timeAndDateData))))
-	
+
 	for i := 0; i < iterations; i++ {
 		averageHumidity := (weatherChannelData[i].Humidity + timeAndDateData[i].Humidity) / numWebsites
 		if averageHumidity > maxHumidity {
@@ -120,4 +120,64 @@ func MostHumidDay(city string) (int, int) {
 	}
 
 	return maxHumidity, maxHumidityIndex
+}
+
+func DriestDay(city string) (int, int) {
+	weatherChannelData := the_weather_channel_scraper.Scrape(city)
+	timeAndDateData := time_and_date_scraper.Scrape(city)
+
+	minHumidity := (weatherChannelData[0].Humidity + timeAndDateData[0].Humidity) / numWebsites
+	minHumidityIndex := 0
+
+	iterations := int(math.Min(float64(len(weatherChannelData)), float64(len(timeAndDateData))))
+
+	for i := 0; i < iterations; i++ {
+		averageHumidity := (weatherChannelData[i].Humidity + timeAndDateData[i].Humidity) / numWebsites
+		if averageHumidity < minHumidity {
+			minHumidity = averageHumidity
+			minHumidityIndex = i
+		}
+	}
+
+	return minHumidity, minHumidityIndex
+}
+
+func HottestDay(city string) (int, int) {
+	weatherChannelData := the_weather_channel_scraper.Scrape(city)
+	timeAndDateData := time_and_date_scraper.Scrape(city)
+
+	maxTemperature := 0
+	maxTemperatureIndex := 0
+
+	iterations := int(math.Min(float64(len(weatherChannelData)), float64(len(timeAndDateData))))
+
+	for i := 0; i < iterations; i++ {
+		averageTemperature := (weatherChannelData[i].HighTempValue + timeAndDateData[i].HighTempValue) / numWebsites
+		if averageTemperature > maxTemperature {
+			maxTemperature = averageTemperature
+			maxTemperatureIndex = i
+		}
+	}
+
+	return maxTemperature, maxTemperatureIndex
+}
+
+func ColdestDay(city string) (int, int) {
+	weatherChannelData := the_weather_channel_scraper.Scrape(city)
+	timeAndDateData := time_and_date_scraper.Scrape(city)
+
+	minTemperature := (weatherChannelData[0].LowTempValue + timeAndDateData[0].LowTempValue) / numWebsites
+	minTemperatureIndex := 0
+
+	iterations := int(math.Min(float64(len(weatherChannelData)), float64(len(timeAndDateData))))
+
+	for i := 0; i < iterations; i++ {
+		averageTemperature := (weatherChannelData[i].LowTempValue + timeAndDateData[i].LowTempValue) / numWebsites
+		if averageTemperature < minTemperature {
+			minTemperature = averageTemperature
+			minTemperatureIndex = i
+		}
+	}
+
+	return minTemperature, minTemperatureIndex
 }

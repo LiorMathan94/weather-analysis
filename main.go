@@ -4,14 +4,11 @@ import (
 	"fmt"
 
 	data "github.com/LiorMathan94/weather-analysis/data"
-	// time_and_date_scraper "github.com/LiorMathan94/weather-analysis/scrapers/time_and_date"
 )
 
 func main() {
 	city := "Tel Aviv"
 	count := 5
-
-	// time_and_date_scraper.Scrape(city)
 
 	fmt.Printf("\n\n=========== Weather Analysis for %s: ===========", city)
 
@@ -22,6 +19,9 @@ func main() {
 	printWeatherSummery(city, 0)
 	printMostWindyDay(city)
 	printMostHumidDay(city)
+	printDriestDay(city)
+	printHottestDay(city)
+	printColdestDay(city)
 
 	fmt.Println("\n\n======================================================")
 }
@@ -63,4 +63,19 @@ func printMostWindyDay(city string) {
 func printMostHumidDay(city string) {
 	humidity, humidDay := data.MostHumidDay(city)
 	fmt.Printf("\n\n> The day with the highest humidity in %s will occur in %d days. The humidity will be %d%%.", city, humidDay, humidity)
+}
+
+func printDriestDay(city string) {
+	humidity, dryDay := data.DriestDay(city)
+	fmt.Printf("\n\n> The driest day (with the lowest humidity) in %s will occur in %d days. The humidity will be %d%%.", city, dryDay, humidity)
+}
+
+func printHottestDay(city string) {
+	temperature, hottestDay := data.HottestDay(city)
+	fmt.Printf("\n\n> The hottest day in %s will occur in %d days. The temperature will be %d°.", city, hottestDay, temperature)
+}
+
+func printColdestDay(city string) {
+	temperature, coldestDay := data.ColdestDay(city)
+	fmt.Printf("\n\n> The coldest day in %s will occur in %d days. The temperature will be %d°.", city, coldestDay, temperature)
 }
